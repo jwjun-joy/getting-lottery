@@ -1,0 +1,9 @@
+[project]
+name = "getting-lottery"
+version = "0.1.0"
+description = "Fetch South Korean Lotto 6/45 winning numbers and prize information"
+readme = "README.md"
+requires-python = ">=3.13.9"
+dependencies = [
+    "httpx>=0.28.1",
+]
