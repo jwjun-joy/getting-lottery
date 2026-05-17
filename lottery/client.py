@@ -1,5 +1,8 @@
 import httpx
 import re
+from datetime import datetime, date
+
+FIRST_ROUND_DATE = date(2002, 12, 7)
 
 def get_latest_round():
     url = "https://www.dhlottery.co.kr/lt645/result"
@@ -48,3 +51,28 @@ def get_lotto_range(start_round, end_round):
     except httpx.HTTPError as e:
         print(f"Error fetching lotto range {start_round}~{end_round}: {e}")
         return []
+
+def get_round_by_date(date_str):
+    """
+    Calculates the last lottery round number on or before the given date.
+    Supports YYYY-MM-DD and YYYYMMDD formats.
+    """
+    try:
+        if "-" in date_str:
+            target_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+        else:
+            target_date = datetime.strptime(date_str, "%Y%m%d").date()
+    except ValueError:
+        return None
+
+    if target_date < FIRST_ROUND_DATE:
+        return 0
+
+    delta = target_date - FIRST_ROUND_DATE
+    calculated_round = (delta.days // 7) + 1
+    
+    latest_round = get_latest_round()
+    if latest_round and calculated_round > latest_round:
+        return latest_round
+        
+    return calculated_round

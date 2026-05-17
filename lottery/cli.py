@@ -1,5 +1,5 @@
 import sys
-from .client import get_latest_round, get_lotto_details, get_lotto_range
+from .client import get_latest_round, get_lotto_details, get_lotto_range, get_round_by_date
 from .formatter import print_lotto_result
 
 def run():
@@ -16,11 +16,21 @@ def run():
             print(f"Invalid round numbers: {sys.argv[1]}, {sys.argv[2]}")
             return
     elif len(sys.argv) > 1:
+        arg = sys.argv[1]
         try:
-            start_round = end_round = int(sys.argv[1])
+            start_round = end_round = int(arg)
         except ValueError:
-            print(f"Invalid round number: {sys.argv[1]}")
-            return
+            # Not an integer, check if it's a date
+            calc_round = get_round_by_date(arg)
+            if calc_round is None:
+                print(f"Invalid input (not a round number or date): {arg}")
+                return
+            elif calc_round == 0:
+                print(f"No rounds exist before the first draw on 2002-12-07.")
+                return
+            else:
+                print(f"Finding last round for date {arg}: Round {calc_round}")
+                start_round = end_round = calc_round
     else:
         latest_round = get_latest_round()
         if not latest_round:
