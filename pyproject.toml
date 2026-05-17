@@ -7,4 +7,7 @@ requires-python = ">=3.13.9"
 dependencies = [
     "httpx>=0.28.1",
     "korean-lunar-calendar>=0.3.1",
+    "mcp[cli]>=1.27.1",
+    "starlette>=1.0.0",
+    "uvicorn>=0.47.0",
 ]
