@@ -48,6 +48,40 @@ uv run main.py 1220 1223
 ```
 *Note: The script automatically sorts the range from smallest to largest.*
 
+## 🤖 MCP Server
+
+This tool also provides a Model Context Protocol (MCP) server, allowing AI models to directly query lottery data.
+
+### 1. Local Development (Inspector)
+To test the server locally with the MCP Inspector:
+```bash
+uv run mcp dev lottery/server.py
+```
+
+### 2. Integration with Claude Desktop
+Add the following to your `claude_desktop_config.json`:
+```json
+{
+  "mcpServers": {
+    "korean-lottery": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/path/to/getting-lottery",
+        "run",
+        "lottery/server.py"
+      ]
+    }
+  }
+}
+```
+
+### 3. Running as an SSE Server (Remote)
+To run the server over HTTP (SSE):
+```bash
+uv run lottery/server.py --transport sse --port 8000
+```
+
 ## 📄 Output Format Example
 
 ```text
