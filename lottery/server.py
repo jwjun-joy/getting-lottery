@@ -131,9 +131,9 @@ if __name__ == "__main__":
     
     args, unknown = parser.parse_known_args()
 
-    if args.transport == "sse":
+    if args.transport in ["sse", "streamable-http"]:
         import uvicorn
-        print(f"Starting MCP server with SSE transport on {args.host}:{args.port}...")
+        print(f"Starting MCP server with {args.transport} transport on {args.host}:{args.port}...")
         uvicorn.run(mcp.app, host=args.host, port=args.port)
     else:
         mcp.run(transport="stdio")
