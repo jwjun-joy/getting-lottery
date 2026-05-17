@@ -132,7 +132,8 @@ if __name__ == "__main__":
     args, unknown = parser.parse_known_args()
 
     if args.transport == "sse":
+        import uvicorn
         print(f"Starting MCP server with SSE transport on {args.host}:{args.port}...")
-        mcp.run(transport="sse", host=args.host, port=args.port)
+        uvicorn.run(mcp.app, host=args.host, port=args.port)
     else:
         mcp.run(transport="stdio")
