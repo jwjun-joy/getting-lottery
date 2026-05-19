@@ -18,7 +18,7 @@ def get_latest_round():
             match = re.search(r"(\d+)회", response.text)
             if match:
                 return int(match.group(1))
-    except httpx.HTTPError as e:
+    except (httpx.HTTPError, ValueError, TypeError) as e:
         print(f"Error fetching latest round: {e}")
     return None
 
@@ -48,7 +48,7 @@ def get_lotto_range(start_round, end_round):
                 # Return the list of items, sorted by round number ascending
                 return sorted(data["data"]["list"], key=lambda x: x["ltEpsd"])
             return []
-    except httpx.HTTPError as e:
+    except (httpx.HTTPError, KeyError, ValueError, TypeError) as e:
         print(f"Error fetching lotto range {start_round}~{end_round}: {e}")
         return []
 
