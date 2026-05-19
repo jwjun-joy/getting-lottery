@@ -39,6 +39,12 @@ def run():
         print(f"Latest round found: {latest_round}")
         start_round = end_round = latest_round
     
+    # Security/Robustness: Limit the range to prevent excessive memory usage
+    MAX_RANGE_SIZE = 3000
+    if abs(end_round - start_round) >= MAX_RANGE_SIZE:
+        print(f"Requested range is too large (max {MAX_RANGE_SIZE} rounds).")
+        return
+
     results = get_lotto_range(start_round, end_round)
     
     if not results:
