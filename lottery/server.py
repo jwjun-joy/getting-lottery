@@ -1,7 +1,15 @@
 import re
+import sys
+import os
 from typing import Optional, List
 from pydantic import BaseModel, Field, field_validator, ConfigDict
 from mcp.server.fastmcp import FastMCP
+
+# Ensure the project root is in sys.path so 'lottery' package can be found
+# when running via `mcp dev lottery/server.py`
+_project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _project_root not in sys.path:
+    sys.path.insert(0, _project_root)
 
 from lottery.client import get_latest_round, get_lotto_range, get_round_by_date
 from lottery.formatter import format_lotto_result
