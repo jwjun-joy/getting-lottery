@@ -4,6 +4,49 @@ from .formatter import print_lotto_result
 
 _LAST_KEYWORD = "last"
 
+
+def print_help() -> None:
+    """--help 옵션 실행 시 사용법 및 예시를 출력합니다."""
+    help_text = """
+Usage: main.py [OPTIONS] [ROUND] [START_ROUND END_ROUND] [DATE]
+
+한국 로또 6/45 당첨 번호 및 상금 정보를 조회하는 애플리케이션입니다.
+
+Options:
+  --help                  이 도움말 메시지를 출력하고 종료합니다.
+
+Arguments:
+  (없음)                  가장 최신 회차의 당첨 번호를 조회합니다.
+  ROUND                   특정 회차 번호를 조회합니다. (예: 1100)
+  START_ROUND END_ROUND   지정한 범위의 회차를 일괄 조회합니다. (최대 3000회차)
+  DATE                    해당 날짜까지의 마지막 회차를 조회합니다. (형식: YYYY-MM-DD)
+
+Keywords:
+  last                    ROUND 자리에 "last"를 사용하면 최신 회차로 대체됩니다.
+                          START_ROUND 또는 END_ROUND에도 사용할 수 있습니다.
+
+Examples:
+  최신 회차 조회:
+    $ uv run main.py
+
+  특정 회차(1100회) 조회:
+    $ uv run main.py 1100
+
+  회차 범위 조회 (1000~1050회):
+    $ uv run main.py 1000 1050
+
+  최신 회차부터 10회 전까지 조회:
+    $ uv run main.py 1090 last
+
+  특정 날짜 기준 마지막 회차 조회:
+    $ uv run main.py 2024-01-01
+
+  이 도움말 보기:
+    $ uv run main.py --help
+"""
+    print(help_text.strip())
+
+
 def _resolve_round_arg(arg: str, latest_round_cache: list) -> int | None:
     """
     문자열 인자를 회차 번호(int)로 변환합니다.
@@ -24,6 +67,11 @@ def _resolve_round_arg(arg: str, latest_round_cache: list) -> int | None:
         return None
 
 def run():
+    # --help 플래그가 포함되어 있으면 도움말을 출력하고 정상 종료
+    if "--help" in sys.argv or "-h" in sys.argv:
+        print_help()
+        sys.exit(0)
+
     start_round = None
     end_round = None
     latest_round_cache = []  # get_latest_round() 중복 호출 방지용 캐시
