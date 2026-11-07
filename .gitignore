@@ -11,3 +11,8 @@ wheels/
 
 # Local Gemini settings
 .gemini/
+
+# Google Drive API credentials
+credentials.json
+token.json
+service_account.json
